@@ -12,9 +12,9 @@ echo  ╚═══════════════════════�
 echo.
 
 :: Check Python
-python --version >nul 2>&1
+py -3.12 --version >nul 2>&1
 if errorlevel 1 (
-    echo  [ERROR] Python not found. Please install Python 3.10+ from python.org
+    echo  [ERROR] Python 3.12 not found. Please install Python 3.12 from python.org
     pause
     exit /b 1
 )
@@ -30,8 +30,8 @@ if not exist ".env" (
 
 :: Create virtual environment if missing
 if not exist "venv\Scripts\activate.bat" (
-    echo  [INFO] Creating virtual environment ...
-    python -m venv venv
+    echo  [INFO] Creating virtual environment with Python 3.12 ...
+    py -3.12 -m venv venv
     if errorlevel 1 (
         echo  [ERROR] Failed to create virtual environment.
         pause
