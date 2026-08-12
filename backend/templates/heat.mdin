@@ -1,0 +1,33 @@
+Heating NVT 0→{{TEMP}} K — BindCraft ({{PRESET_LABEL}})
+ &cntrl
+  ! --- Control ---
+  imin=0,                ! 0 = run dynamics
+  irest=0,               ! 0 = new simulation (not a restart)
+  ntx=1,                 ! 1 = read coordinates only
+
+  ! --- Time ---
+  nstlim={{HEAT_NSTLIM}}, ! Total MD steps
+  dt=0.002,              ! Timestep = 2 fs
+
+  ! --- Constraints ---
+  ntc=2,                 ! SHAKE on bonds involving H
+  ntf=2,                 ! No force evaluation for bonds with SHAKE
+
+  ! --- Nonbonded ---
+  cut=10.0,              ! Non-bonded cutoff
+
+  ! --- Thermostat: Langevin NVT ---
+  ntt=3,                 ! Langevin thermostat
+  gamma_ln=2.0,          ! Langevin collision frequency (ps⁻¹)
+  tempi=0.0,             ! Initial temperature (K)
+  temp0={{TEMP}},        ! Target temperature (K)
+
+  ! --- Periodic boundary ---
+  ntb=1,                 ! Constant volume
+  ntp=0,                 ! No pressure scaling during heating
+
+  ! --- Output ---
+  ntpr={{OUTPUT_FREQ}},  ! Print energy every N steps
+  ntwx={{OUTPUT_FREQ}},  ! Write trajectory every N steps
+  ntwr={{OUTPUT_FREQ}},  ! Write restart every N steps
+ /

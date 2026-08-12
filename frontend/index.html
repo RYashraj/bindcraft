@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BindCraft — AMBER MD Workflows for B.Pharm Students</title>
+  <meta name="description" content="BindCraft helps B.Pharm students learn AMBER molecular dynamics without writing command files. Upload structures, choose settings, generate AMBER input files, and visualise results." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Plotly for charts -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- ── Top Navigation ──────────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <div class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L24 8V20L14 26L4 20V8L14 2Z" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
+        <circle cx="14" cy="14" r="4" fill="url(#logoGrad)"/>
+        <line x1="14" y1="4" x2="14" y2="10" stroke="url(#logoGrad)" stroke-width="1.5"/>
+        <line x1="14" y1="18" x2="14" y2="24" stroke="url(#logoGrad)" stroke-width="1.5"/>
+        <line x1="4.5" y1="8.5" x2="9.5" y2="11.5" stroke="url(#logoGrad)" stroke-width="1.5"/>
+        <line x1="18.5" y1="16.5" x2="23.5" y2="19.5" stroke="url(#logoGrad)" stroke-width="1.5"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="4" y1="2" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#818cf8"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <a href="#" class="nav-title" id="nav-home-link">BindCraft</a>
+    <span class="nav-tagline">Crafting protein–ligand MD workflows</span>
+  </div>
+  <div class="nav-actions">
+    <div class="system-status" id="system-status-badge">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-label">Checking...</span>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="btn-help" title="Help">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12a1 1 0 110-2 1 1 0 010 2zm.9-4.44c0 .49-.39.94-.9.94s-.9-.45-.9-.94V8.5c0-.49.4-.9.9-.9s.9.41.9.9v.06zm.07-2.86A1.97 1.97 0 018 8.07a2 2 0 01-2-2c0-.55.23-1.05.59-1.4A2 2 0 0110 6.07z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────────────────────── -->
+<div class="breadcrumb-bar" id="breadcrumb-bar" style="display:none">
+  <div class="container">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+  </div>
+</div>
+
+<!-- ── Main Content ─────────────────────────────────────────────────────────── -->
+<main class="main-content" id="main-content">
+  <!-- Page content is injected here by app.js -->
+  <div class="page-loading" id="page-loading">
+    <div class="spinner-large"></div>
+    <p>Loading BindCraft…</p>
+  </div>
+</main>
+
+<!-- ── Disclaimer Footer ────────────────────────────────────────────────────── -->
+<footer class="app-footer">
+  <div class="container">
+    <p>
+      ⚠️ <strong>Educational Use Only</strong> —
+      BindCraft is designed for learning AMBER MD workflows.
+      Results are not validated for clinical, docking, or publishable use.
+      Requires a pre-posed ligand in its binding site.
+    </p>
+    <p class="footer-meta">
+      BindCraft v1.0 · Free &amp; Open Source · Uses AmberTools (free) only
+    </p>
+  </div>
+</footer>
+
+<!-- ── Toast Notifications ──────────────────────────────────────────────────── -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ── Help Modal ───────────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="help-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>BindCraft Help</h2>
+      <button class="modal-close" id="help-modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>What is BindCraft?</h3>
+      <p>BindCraft helps B.Pharm students learn AMBER molecular dynamics (MD) without writing command files. You upload prepared structures, choose simple settings, and BindCraft generates the AMBER input files for you.</p>
+      <h3>Three Modes</h3>
+      <ul>
+        <li><strong>Demo</strong> — explore a pre-built AChE + Donepezil simulation. No software required.</li>
+        <li><strong>Generate Only</strong> — create and download a complete AMBER input package. Works on Windows without WSL or AmberTools.</li>
+        <li><strong>Run Local</strong> — execute the full pipeline on your machine. Requires WSL2 + Ubuntu + AmberTools (free).</li>
+      </ul>
+      <h3>Important: No Docking</h3>
+      <p>BindCraft does <strong>not</strong> perform docking. Your ligand must already be in its binding pose (as a HETATM record in the PDB). Use a co-crystal structure from PDB or perform docking separately with AutoDock Vina or similar tools before uploading.</p>
+      <h3>Quick Start</h3>
+      <ol>
+        <li>Click <strong>New Project</strong> on the dashboard.</li>
+        <li>Upload your complex PDB + ligand SDF/MOL2 + enter net charge.</li>
+        <li>Complete the Setup Wizard.</li>
+        <li>Review warnings and confirm.</li>
+        <li>Choose Generate or Run.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ── Scripts ──────────────────────────────────────────────────────────────── -->
+<script src="/static/js/app.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/new_project.js"></script>
+<script src="/static/js/wizard.js"></script>
+<script src="/static/js/review.js"></script>
+<script src="/static/js/results.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# cpptraj analysis input — BindCraft ({{PRESET_LABEL}})
+# Analyses: RMSD (backbone), RMSF (per residue), Radius of Gyration
+
+# Load topology
+parm ../input/complex.prmtop
+
+# Load production trajectory
+trajin ../output/prod.mdcrd
+
+# Strip water and counterions for analysis
+strip :WAT,Na+,Cl- outprefix stripped
+
+# --- RMSD: protein backbone relative to minimised structure ---
+# (reference defaults to first frame)
+rmsd backbone @CA,C,N out rmsd.csv mass
+
+# --- RMSF: per-residue atomic fluctuations ---
+atomicfluct out rmsf.csv byres @CA,C,N
+
+# --- Radius of gyration ---
+radgyr out rg.csv mass nomax
+
+# Run all commands
+run

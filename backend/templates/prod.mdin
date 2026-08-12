@@ -1,0 +1,30 @@
+Production NPT — BindCraft ({{PRESET_LABEL}})
+ &cntrl
+  ! --- Control ---
+  imin=0, irest=1, ntx=5, ! Continue from equilibration
+
+  ! --- Time ---
+  nstlim={{PROD_NSTLIM}},  ! Production MD steps
+  dt=0.002,                ! Timestep = 2 fs
+
+  ! --- Constraints ---
+  ntc=2, ntf=2,
+
+  ! --- Nonbonded ---
+  cut=10.0,
+
+  ! --- Thermostat: Langevin NPT ---
+  ntt=3, gamma_ln=2.0, temp0={{TEMP}},
+
+  ! --- Barostat: Berendsen ---
+  ntb=2,
+  ntp=1,
+  pres0={{PRESSURE}},
+  taup=2.0,
+
+  ! --- Output ---
+  ntpr={{OUTPUT_FREQ}}, ntwx={{OUTPUT_FREQ}}, ntwr={{OUTPUT_FREQ}},
+
+  ! --- IMPORTANT: this is production data — save more frequently ---
+  ntwv=0,                  ! Do not write velocities to save disk space
+ /

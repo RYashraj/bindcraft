@@ -1,0 +1,27 @@
+Equilibration NPT — BindCraft ({{PRESET_LABEL}})
+ &cntrl
+  ! --- Control ---
+  imin=0, irest=1, ntx=5, ! Restart from heating
+
+  ! --- Time ---
+  nstlim={{EQUIL_NSTLIM}}, ! Total equilibration steps
+  dt=0.002,                ! Timestep = 2 fs
+
+  ! --- Constraints ---
+  ntc=2, ntf=2,
+
+  ! --- Nonbonded ---
+  cut=10.0,
+
+  ! --- Thermostat: Langevin NPT ---
+  ntt=3, gamma_ln=2.0, temp0={{TEMP}},
+
+  ! --- Barostat: Berendsen ---
+  ntb=2,                   ! Constant pressure
+  ntp=1,                   ! Isotropic pressure scaling
+  pres0={{PRESSURE}},      ! Target pressure (atm)
+  taup=2.0,                ! Pressure relaxation time (ps)
+
+  ! --- Output ---
+  ntpr={{OUTPUT_FREQ}}, ntwx={{OUTPUT_FREQ}}, ntwr={{OUTPUT_FREQ}},
+ /

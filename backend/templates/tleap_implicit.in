@@ -1,0 +1,26 @@
+# BindCraft tleap input — Implicit Solvent (GB/SA)
+# Generated preset: {{PRESET_LABEL}}
+# Protein FF: {{PROTEIN_FF}} | Ligand FF: {{LIGAND_FF}} | Water: Implicit (no box)
+# DO NOT EDIT THE {{PLACEHOLDER}} MARKERS — they are filled by BindCraft.
+
+# Load force field parameters
+source leaprc.protein.ff14SB
+source leaprc.{{LIGAND_FF}}
+
+# Load ligand parameters
+loadamberparams {{LIGAND_NAME}}.frcmod
+{{LIGAND_NAME}} = loadmol2 {{LIGAND_NAME}}_gaff2.mol2
+
+# Load cleaned complex
+complex = loadpdb {{PDB_STEM}}_clean.pdb
+
+# Check for problems
+check complex
+
+# Save topology and coordinates (no periodic box — implicit solvent)
+saveamberparm complex complex.prmtop complex.inpcrd
+
+# Summary
+desc complex
+
+quit

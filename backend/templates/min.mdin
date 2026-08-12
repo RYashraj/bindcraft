@@ -1,0 +1,21 @@
+Minimization — BindCraft ({{PRESET_LABEL}})
+ &cntrl
+  ! --- Control ---
+  imin=1,                ! 1 = run minimisation
+  maxcyc={{MIN_STEPS}},  ! Maximum minimisation steps
+  ncyc=1000,             ! Steepest descent for first 1000 steps, then conjugate gradient
+
+  ! --- Nonbonded ---
+  cut=10.0,              ! Non-bonded cutoff (Angstrom)
+
+  ! --- Restraints (phase 1 only — protein backbone held) ---
+  ntr=0,                 ! 0 = no positional restraints (add 1 for restrained min)
+
+  ! --- Output ---
+  ntpr=100,              ! Print energy every 100 steps
+  ntwr={{OUTPUT_FREQ}},  ! Write restart every N steps
+
+  ! --- Periodic boundary ---
+  ntb=1,                 ! 1 = constant volume
+  ntp=0,                 ! 0 = no pressure scaling during minimisation
+ /
