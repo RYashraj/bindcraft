@@ -44,7 +44,7 @@ call venv\Scripts\activate.bat
 
 :: Install / upgrade dependencies
 echo  [INFO] Checking dependencies ...
-pip install -r requirements.txt --quiet --disable-pip-version-check
+python -m pip install -r requirements.txt --quiet --disable-pip-version-check
 
 :: Create projects directory if missing
 if not exist "projects" mkdir projects
